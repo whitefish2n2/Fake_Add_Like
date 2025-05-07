@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,19 +37,19 @@ namespace Source.MobGenerator
 
         }
 
-        public GameObject GetMob(MobType type, Vector3 pos = default, quaternion rot = default)
+        public GameObject GetMob(MobType type, Vector3 pos = default, Quaternion rot = default)
         {
             //Debug.Log(Mobs[(int)MobType.Bullet].Count);
             if (Mobs[(int)type].Count < 1)
             {
                 var newMob = Instantiate(mobPrefabs[(int)type], pos, rot,null);
-                newMob.transform.position = pos;
-                newMob.transform.rotation = rot;
                 return newMob;
             }
             else
             {
                 var newMob = Mobs[(int)type].Dequeue();
+                if (!newMob)
+                    newMob = Instantiate(mobPrefabs[(int)type], pos, rot, null);
                 newMob.transform.SetParent(null);
                 newMob.transform.position = pos;
                 newMob.transform.rotation = rot;
@@ -59,6 +60,8 @@ namespace Source.MobGenerator
 
         public void ReturnMob(MobType type, GameObject obj)
         {
+            if (!obj)
+                return;
             if (Mobs[(int)type].Count < mobPoolCount[(int) type])
             {
                 obj.transform.SetParent(transform);
@@ -77,6 +80,8 @@ namespace Source.MobGenerator
             Unit,
             Enemy,
             Boss,
+            Gate,
+            Item,
         }
     }
 }

@@ -12,22 +12,11 @@ public class Gate : MonoBehaviour
     [SerializeField] private Renderer[] mat;
     Coroutine coroutine;
     [SerializeField] private TextMeshPro valueText;
+    
 
-    bool flag=false;
-    private void Start()
+    public void Init(int c)
     {
-        Init();
-        flag = true;
-    }
-
-    private void OnEnable()
-    {
-        if (!flag) return;
-        Init();
-    }
-
-    private void Init()
-    {
+        count = c;
         valueText.text = count.ToString();
         if (count < 0)
         {
@@ -57,7 +46,7 @@ public class Gate : MonoBehaviour
         //Debug.Log("trigger on gate " + other.name );
         if (other.transform.CompareTag("bullet"))
         {
-            Hit(GameStatic.instance.player.unitDamage);
+            Hit(1);
             ObjectPool.instance.ReturnMob(ObjectPool.MobType.Bullet, other.gameObject);
         }
         else if (other.transform.CompareTag("Player"))

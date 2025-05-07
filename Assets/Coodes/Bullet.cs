@@ -7,19 +7,19 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField]private float _currentLifeTime;
-    private Coroutine _currentCoroutine;
-    private TrailRenderer _trailRenderer;
+    private Coroutine currentCoroutine;
+    private TrailRenderer trailRenderer;
 
     private void Awake()
     {
-        _trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     private void OnEnable()
     {
-        _trailRenderer.enabled = true;
+        trailRenderer.enabled = true;
         _currentLifeTime = 0f;
-        _currentCoroutine = StartCoroutine(Move());
+        currentCoroutine = StartCoroutine(Move());
     }
 
     private IEnumerator Move()
@@ -30,12 +30,13 @@ public class Bullet : MonoBehaviour
             _currentLifeTime += Time.deltaTime;
             yield return null;
         }
-        ObjectPool.instance.ReturnMob(ObjectPool.MobType.Bullet, gameObject);
+        if(gameObject.activeInHierarchy)
+            ObjectPool.instance.ReturnMob(ObjectPool.MobType.Bullet, gameObject);
     }
     private void OnDisable()
     {
-        _trailRenderer.Clear();
-        _trailRenderer.enabled = false;
-        StopCoroutine(_currentCoroutine);
+        trailRenderer.Clear();
+        trailRenderer.enabled = false;
+        StopCoroutine(currentCoroutine);
     }
 }

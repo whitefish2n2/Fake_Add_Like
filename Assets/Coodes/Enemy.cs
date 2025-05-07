@@ -38,7 +38,7 @@ public class Enemy:MonoBehaviour
     {
         if(currentCoroutine is not null)
             StopCoroutine(currentCoroutine);
-        currentHp = hp;
+        currentHp = (int)math.pow(hp,GameStatic.instance.difficulty);
         alive = true;
         animator.SetBool(IsAliveAnimHash,true);
         currentCoroutine = StartCoroutine(Logic());
