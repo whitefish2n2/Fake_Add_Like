@@ -66,6 +66,8 @@ public class WaveManager : MonoBehaviour
                 v*=(int)GameStatic.instance.difficulty;
                 var l= ObjectPool.instance.GetMob(ObjectPool.MobType.Gate,new Vector3(-1.5f,0,transform.position.z));
                 l.GetComponent<Gate>().Init(v);
+                v = random.NextInt(-10,10);
+                v*=(int)GameStatic.instance.difficulty;
                 var r = ObjectPool.instance.GetMob(ObjectPool.MobType.Gate,new Vector3(1.5f,0,transform.position.z));
                 r.GetComponent<Gate>().Init(v);
             }
